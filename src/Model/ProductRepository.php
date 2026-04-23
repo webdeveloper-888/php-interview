@@ -11,7 +11,7 @@ final class ProductRepository
     public function all(): array
     {
         $pdo = Connection::get();
-        $stmt = $pdo->query('SELECT * FROM products ORDER BY created_at DESC');
+        $stmt = $pdo->query('SELECT * FROM products');
 
         return $stmt->fetchAll();
     }
@@ -19,7 +19,7 @@ final class ProductRepository
     public function find(int $id): ?array
     {
         $pdo = Connection::get();
-        $stmt = $pdo->prepare('SELECT * FROM products WHERE id = :id');
+        $stmt = $pdo->prepare('SELECT * FROM products');
         $stmt->execute(['id' => $id]);
         $product = $stmt->fetch();
 
