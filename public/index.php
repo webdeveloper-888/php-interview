@@ -6,6 +6,11 @@ use App\Controller\ProductController;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 
+$path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
+if ($path !== '/' && file_exists(__DIR__ . $path)) {
+    return false;
+}
+
 require __DIR__ . '/../vendor/autoload.php';
 
 define('BASE_PATH', dirname(__DIR__));
@@ -16,7 +21,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (RouteCollector $router): void
 });
 
 $httpMethod = $_SERVER['REQUEST_METHOD'] ?? 'GET';
-$uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
+$uri = $path;
 
 $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 
